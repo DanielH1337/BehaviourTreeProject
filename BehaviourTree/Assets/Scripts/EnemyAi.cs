@@ -15,8 +15,6 @@ public class EnemyAi : MonoBehaviour
 
     [SerializeField] private Transform playerTransform;
 
-    
-
     [SerializeField] private Cover[] availableCovers;
 
     private Material material;
@@ -34,19 +32,18 @@ public class EnemyAi : MonoBehaviour
     private void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
-        material = GetComponent<MeshRenderer>().material;
+        material = GetComponentInChildren<MeshRenderer>().material;
     }
     private void Start()
     {
         _currentHealth = startingHealth;
-        material = GetComponent<MeshRenderer>().material;
         ConstrucktBehaviourTree();
 
     }
 
     private void ConstrucktBehaviourTree()
     {
-        IsCoverAvailableNode coverAvailableNode = new IsCoverAvailableNode(availableCovers, playerTransform, this);
+        IsCoverAvailableNode coverAvaliableNode = new IsCoverAvailableNode(availableCovers, playerTransform, this);
         GoToCoverNode goToCoverNode = new GoToCoverNode(agent, this);
         HealthNode healthNode = new HealthNode(this, lowHealthThreshold);
         IsCoveredNode isCoveredNode = new IsCoveredNode(playerTransform, transform);
@@ -58,9 +55,9 @@ public class EnemyAi : MonoBehaviour
         Sequence chaseSequence = new Sequence(new List<Node> { chasingRangeNode, chaseNode });
         Sequence shootSequence = new Sequence(new List<Node> { shootingRangeNode, shootNode });
 
-        Sequence goToCoverSequence = new Sequence(new List<Node> { coverAvailableNode, goToCoverNode });
+        Sequence goToCoverSequence = new Sequence(new List<Node> { coverAvaliableNode, goToCoverNode });
         Selector findCoverSelector = new Selector(new List<Node> { goToCoverSequence, chaseSequence });
-        Selector tryToTakeCoverSelector = new Selector(new List<Node> {isCoveredNode, findCoverSelector });
+        Selector tryToTakeCoverSelector = new Selector(new List<Node> { isCoveredNode, findCoverSelector });
         Sequence mainCoverSequence = new Sequence(new List<Node> { healthNode, tryToTakeCoverSelector });
 
         topNode = new Selector(new List<Node> { mainCoverSequence, shootSequence, chaseSequence });
@@ -79,6 +76,7 @@ public class EnemyAi : MonoBehaviour
         if(topNode.nodeState == NodeState.FAILURE)
         {
             SetColor(Color.red);
+            agent.isStopped = true;
         }
         currentHealth += Time.deltaTime * healthRestoreRate;
     }

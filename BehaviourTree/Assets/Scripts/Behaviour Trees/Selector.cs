@@ -25,7 +25,7 @@ public class Selector : Node
                     _nodeState = NodeState.SUCCESS;
                     return _nodeState;
                 case NodeState.FAILURE:
-                    return _nodeState;
+                    break;
                 default:
                     break;
             }
