@@ -8,6 +8,8 @@ public class Cover : MonoBehaviour
 
     public Transform[] GetCoverSpots()
     {
+       
         return coverSpots;
+        
     }
 }

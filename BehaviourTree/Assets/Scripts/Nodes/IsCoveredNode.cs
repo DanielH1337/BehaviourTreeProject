@@ -16,7 +16,7 @@ public class IsCoveredNode : Node
     public override NodeState Evaluate()
     {
         RaycastHit hit;
-        if(Physics.Raycast(origin.position,target.position = origin.position, out hit))
+        if(Physics.Raycast(origin.position,target.position - origin.position, out hit))
         {
             if(hit.collider.transform != target)
             {

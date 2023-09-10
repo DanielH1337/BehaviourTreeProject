@@ -7,7 +7,7 @@ using UnityEngine.AI;
 public class EnemyAi : MonoBehaviour
 {
     [SerializeField] private float startingHealth;
-    [SerializeField] private float lowHealthThreshold;
+    [SerializeField] private float lowHealthThreshold; 
     [SerializeField] private float healthRestoreRate;
 
     [SerializeField] private float chasingRange;
@@ -43,7 +43,7 @@ public class EnemyAi : MonoBehaviour
 
     private void ConstrucktBehaviourTree()
     {
-        IsCoverAvailableNode coverAvaliableNode = new IsCoverAvailableNode(availableCovers, playerTransform, this);
+        IsCoverAvaliableNode coverAvaliableNode = new IsCoverAvaliableNode(availableCovers, playerTransform, this);
         GoToCoverNode goToCoverNode = new GoToCoverNode(agent, this);
         HealthNode healthNode = new HealthNode(this, lowHealthThreshold);
         IsCoveredNode isCoveredNode = new IsCoveredNode(playerTransform, transform);
@@ -85,7 +85,7 @@ public class EnemyAi : MonoBehaviour
         currentHealth -= 10f;
     }
 
-    public void SetBestCover(Transform bestCoverSpot)
+    public void SetBestCoverSpot(Transform bestCoverSpot)
     {
         this.bestCoverSpot = bestCoverSpot;
     }
